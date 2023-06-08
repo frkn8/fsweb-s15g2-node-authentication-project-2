@@ -1,29 +1,47 @@
-// DEĞİŞİKLİK YAPMAYIN
-const sharedConfig = {
-  client: 'sqlite3',
-  migrations: {
-    directory: './data/migrations',
-  },
-  seeds: {
-    directory: './data/seeds',
-  },
-   // SQLite için aşağıdaki satırları ekliyoruz
-  useNullAsDefault: true,
-  // aşağıdaki satır foreign keys'i SQLite'da aktifleştirir
-  pool: {
-    afterCreate: (conn, done) => {
-      conn.run('PRAGMA foreign_keys = ON', done)
-    },
-  },
-}
+// Update with your config settings.
 
+/**
+ * @type { Object.<string, import("knex").Knex.Config> }
+ */
 module.exports = {
+
   development: {
-    ...sharedConfig,
-    connection: { filename: './data/auth.db3' },
+    client: 'sqlite3',
+    connection: {
+      filename: './dev.sqlite3'
+    }
   },
-  testing: {
-    ...sharedConfig,
-    connection: { filename: './data/testing.db3' },
+
+  staging: {
+    client: 'postgresql',
+    connection: {
+      database: 'my_db',
+      user:     'username',
+      password: 'password'
+    },
+    pool: {
+      min: 2,
+      max: 10
+    },
+    migrations: {
+      tableName: 'knex_migrations'
+    }
   },
-}
+
+  production: {
+    client: 'postgresql',
+    connection: {
+      database: 'my_db',
+      user:     'username',
+      password: 'password'
+    },
+    pool: {
+      min: 2,
+      max: 10
+    },
+    migrations: {
+      tableName: 'knex_migrations'
+    }
+  }
+
+};
